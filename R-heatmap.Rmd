@@ -1,0 +1,110 @@
+---
+title: "Untitled"
+output: html_document
+date: '2022-06-02'
+---
+
+```{r}
+library(xlsx)
+star<- read.xlsx("datamap.xlsx",sheetName = "Sheet1")
+```
+
+```{r}
+rownames(star)<-star[,1]
+star<-star[,-1]
+```
+
+```{r}
+dt2  <- as.matrix(star)
+```
+
+```{r}
+heatmap(dt2, scale = "column",
+        #RowSideColors = rowcolor,
+        #ColSideColors = colcolor,
+        margins = c(6,10),
+        xlab = NULL,
+        ylab = NULL)
+```
+
+```{r}
+library(pheatmap)
+tiff(filename="plot4.tif", width=900*6, height=600*6, res=90*6)
+par(mfrow = c(1,1), pty='m', mar=c(4,4,4,2),cex=1, font =1, col=1)
+pheatmap(dt2,#col = col_fun1,
+        name = "Log2GeneCount",
+        cluster_columns = FALSE,
+        show_row_dend = FALSE)
+        #rect_gp = gpar(col= "white"),
+        #row_names_gp = gpar(fontsize = 8),
+        #column_names_gp = gpar(fontsize = 8))
+dev.off()
+```
+
+
+```{r}
+library(pheatmap)
+tiff(filename="plot3.tif", width=900*6, height=600*6, res=90*6)
+par(mfrow = c(1,1), pty='m', mar=c(4,4,4,2),cex=1, font =1, col=1)
+pheatmap(dt2,cluster_rows=F,cluster_cols=T,
+         display_numbers=T,#number_format="%.3f",
+         border="white",
+         fontsize_number=8.5,
+         fontsize_col = 8,
+         fontsize_row = 8,
+         angle_col = 90,
+         legend_breaks=c(0.05,0.25,0.5,0.75,0.95),
+         legend_labels=c("0.05","0.25","0.5","0.75","0.95"),
+         #color = mycol,
+         fontsize=6
+         )
+dev.off()
+```
+
+
+
+
+```{r}
+col_fun1 = colorRamp2(c(0, 2, 10,16),
+c("white", "greenyellow","yellow","red"))
+```
+
+
+
+```{r}
+Heatmap(dt2,col = col_fun1,
+name = "Log2GeneCount",
+cluster_columns = FALSE,
+show_row_dend = FALSE,
+rect_gp = gpar(col= "white"),
+row_names_gp = gpar(fontsize = 8),
+column_names_gp = gpar(fontsize = 8))
+```
+
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
